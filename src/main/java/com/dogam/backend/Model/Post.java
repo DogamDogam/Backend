@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,5 +31,5 @@ public class Post {
     private String place;
 
     @Column(nullable = false)
-    private String content;
+    private String description;
 }

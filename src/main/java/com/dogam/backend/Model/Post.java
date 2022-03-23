@@ -1,5 +1,6 @@
 package com.dogam.backend.Model;
 
+import com.dogam.backend.Dto.RequestPostDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="Posts")
+@Table(name="Post")
 public class Post {
 
     @Id
@@ -32,4 +33,12 @@ public class Post {
 
     @Column(nullable = false)
     private String description;
+
+    public Post(RequestPostDto requestPostDto) {
+        this.image = requestPostDto.getImage();
+        this.title = requestPostDto.getTitle();
+        this.price = requestPostDto.getPrice();
+        this.place = requestPostDto.getPlace();
+        this.description = requestPostDto.getDescription();
+    }
 }

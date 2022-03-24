@@ -24,6 +24,8 @@ public class PostController {
                 .description("1 내용")
                 .price(20000)
                 .place("부산")
+                .category("A")
+                .people(1)
                 .build();
 
         Post post2 = Post.builder()
@@ -32,6 +34,8 @@ public class PostController {
                 .description("2 내용")
                 .price(30000)
                 .place("광진구")
+                .category("A")
+                .people(1)
                 .build();
 
         postRepository.save(post1);
@@ -45,6 +49,8 @@ public class PostController {
         System.out.println(p.getTitle());
         System.out.println(p.getPrice());
         System.out.println(p.getPlace());
+        System.out.println(p.getCategory());
+        System.out.println(p.getPeople());
         System.out.println(p.getDescription());
 
     }

@@ -31,5 +31,11 @@ public class Post {
     private String place;
 
     @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    private Integer people = 0 ;
+
+    @Column(nullable = false)
     private String description;
 }

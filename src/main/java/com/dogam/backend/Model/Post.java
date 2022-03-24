@@ -32,6 +32,12 @@ public class Post {
     private String place;
 
     @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    private Integer numOfpeople;
+
+    @Column(nullable = false)
     private String description;
 
     public Post(RequestPostDto requestPostDto) {
@@ -39,6 +45,8 @@ public class Post {
         this.title = requestPostDto.getTitle();
         this.price = requestPostDto.getPrice();
         this.place = requestPostDto.getPlace();
+        this.numOfpeople = requestPostDto.getNumOfpeople();
+        this.category = requestPostDto.getCategory();
         this.description = requestPostDto.getDescription();
     }
 }

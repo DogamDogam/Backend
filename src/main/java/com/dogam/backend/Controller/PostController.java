@@ -25,7 +25,6 @@ public class PostController {
     @PostMapping("/posts")
     public String postPost(@RequestBody RequestPostDto requestPostDto) {
         Post post = new Post(requestPostDto);
-        System.out.println(requestPostDto.getTitle());
         postRepository.save(post);
         return "저장완료";
     }

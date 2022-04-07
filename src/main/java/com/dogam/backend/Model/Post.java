@@ -1,8 +1,7 @@
 package com.dogam.backend.Model;
 
-import com.dogam.backend.Dto.RequestPostDto;
 import lombok.*;
-
+import com.dogam.backend.Dto.RequestPostDto;
 import javax.persistence.*;
 
 

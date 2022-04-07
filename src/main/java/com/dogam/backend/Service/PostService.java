@@ -18,7 +18,7 @@ public class PostService {
     }
 
     public void savePost(Post post) {
-        postRepository.save(post);
+           postRepository.save(post);
     }
 
     public Optional<List> findByCategory(int id) {

@@ -4,6 +4,7 @@ import com.dogam.backend.Model.Post;
 import com.dogam.backend.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    @Transactional
     public void savePost(Post post) {
            postRepository.save(post);
     }
@@ -28,7 +30,13 @@ public class PostService {
         return Optional.empty();
     }
 
-    public Optional<Post> findById(long id) {
+    public Optional<Post> findById(int id) {
         return postRepository.findById(id);
     }
+
+    @Transactional
+    public void deletePost(int id) {
+        postRepository.deleteById(id);
+    }
+
 }

@@ -2,7 +2,6 @@ package com.dogam.backend.Controller;
 
 import com.dogam.backend.Dto.RequestPostDto;
 import com.dogam.backend.Model.Post;
-import com.dogam.backend.Repository.PostRepository;
 import com.dogam.backend.Service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import java.util.Optional;
 @CrossOrigin
 public class PostController {
 
-    final private PostRepository postRepository;
     final private PostService postService;
 
     @GetMapping("/posts")
@@ -47,8 +45,13 @@ public class PostController {
 
     //게시물별 출력
     @GetMapping("/post/{id}")
-    public Optional<Post> findById(@PathVariable long id) { //model에 담음
+    public Optional<Post> findById(@PathVariable int id) { //model에 담음
         return postService.findById(id);
     }
 
+    @DeleteMapping("/post/{id}")
+    public String deleteById(@PathVariable int id) {
+        postService.deletePost(id);
+        return "삭제완료";
+    }
 }

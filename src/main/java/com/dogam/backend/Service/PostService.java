@@ -35,6 +35,17 @@ public class PostService {
     }
 
     @Transactional
+    public void updatePost(int id, Post requestPost) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(()-> {
+                    return new IllegalArgumentException("글 찾기 실패: 아이디를 찾을 수 없습니다.");
+                });
+        post.setTitle(requestPost.getTitle());
+        post.setDescription(requestPost.getDescription());
+    }
+
+
+    @Transactional
     public void deletePost(int id) {
         postRepository.deleteById(id);
     }

@@ -32,10 +32,5 @@ public class Reply {
 
     @CreationTimestamp
     private Timestamp createDate;
-
-    public Reply(RequestReplyDto requestReplyDto) {
-        this.image = requestReplyDto.getImage();
-        this.content = requestReplyDto.getContent();
-    }
 }
 

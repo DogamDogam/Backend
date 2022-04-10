@@ -1,5 +1,6 @@
 package com.dogam.backend.Dto;
 
+import com.dogam.backend.Model.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class RequestReplyDto {
     private String image;
     private String content;
+    private int postId;
 }

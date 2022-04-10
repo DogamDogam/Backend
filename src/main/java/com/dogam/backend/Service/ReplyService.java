@@ -8,6 +8,9 @@ import com.dogam.backend.Repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class ReplyService {
@@ -15,19 +18,19 @@ public class ReplyService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
 
-    public Object selectReplys(int postId) {
-        if (postRepository.findById(postId).isEmpty()){
-            return "해당 게시물이 없습니다.";
-        }
-        else {
+    public Optional<List> selectReplys(int postId) {
             return replyRepository.findByPostId(postId);
-        }
     }
 
-    public String saveReply(int postId, Reply reply) {
+    public String saveReply(int postId, RequestReplyDto requestReplyDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> {
             return new IllegalArgumentException("댓글 쓰기 실패: 게시물 id를 찾을 수 없습니다.");
         }); //영속화
+        Reply reply = Reply.builder()
+                .post(post)
+                .image(requestReplyDto.getImage())
+                .content(requestReplyDto.getContent())
+                .build();
 
         replyRepository.save(reply);
         return "댓글쓰기 완료";

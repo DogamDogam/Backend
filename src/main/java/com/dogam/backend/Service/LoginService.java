@@ -1,12 +1,15 @@
 package com.dogam.backend.Service;
 
+import com.dogam.backend.Dto.UserInfoDto;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 @RequiredArgsConstructor
@@ -14,7 +17,7 @@ import java.net.URL;
 public class LoginService {
 
     // 받은 code를 이용하여 access token을 발급받기 위한 함수
-    public static String getKakaoAcceessToken(String code){
+    public static String getKakaoAccessToken(String code){
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -71,6 +74,62 @@ public class LoginService {
         }
         return access_Token;
 
+    }
+
+    // 사용자 정보 가져오기. token = Access Token
+    public static void createUserInfo(String token) {
+        String reqUrl = "https://kapi.kakao.com/v2/user/me";
+
+        try {
+            URL url = new URL(reqUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+            // 전송할 header를 작성하고 access token에 붙여 전송
+
+            // 요청을 통해 얻은 JSON 타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine())!= null) {
+                result += line;
+            }
+            System.out.println("response body : " + result);
+
+            // Gson 라이브러리로 JSON 파싱
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+            JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+
+            int id = element.getAsJsonObject().get("id").getAsInt();
+            // 회원번호
+            boolean hasEmail = kakao_account.get("has_email").getAsBoolean();
+            String email = "";
+            if (hasEmail) {
+                email = kakao_account.get("email").getAsString();
+            }
+
+            String nickname = "";
+            nickname = properties.get("nickname").getAsString();
+            String image = properties.get("profile_image").getAsString();
+
+            System.out.println("-----------------");
+            System.out.println("id : " + id);
+            System.out.println("email : " + email);
+            System.out.println("nickname" + nickname);
+            System.out.println("image : " + image);
+            System.out.println("-----------------");
+
+            br.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

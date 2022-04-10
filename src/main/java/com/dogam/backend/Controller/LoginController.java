@@ -16,7 +16,8 @@ public class LoginController {
     public String kakaoCallback(@RequestParam String code) {
         System.out.println("kakaoLogin");
         System.out.println(code);
-        LoginService.getKakaoAcceessToken(code);
+        String access_token = LoginService.getKakaoAccessToken(code);
+        LoginService.createUserInfo(access_token);
         return "로그인성공";
     }
 }

@@ -49,6 +49,12 @@ public class PostController {
         return postService.findById(id);
     }
 
+    @PutMapping("/post/{id}")
+    public String updateById(@PathVariable int id, @RequestBody Post post) {
+        postService.updatePost(id, post);
+        return "수정완료";
+    }
+
     @DeleteMapping("/post/{id}")
     public String deleteById(@PathVariable int id) {
         postService.deletePost(id);

@@ -22,7 +22,7 @@ public class ReplyService {
             return replyRepository.findByPostId(postId);
     }
 
-    public String saveReply(int postId, RequestReplyDto requestReplyDto) {
+    public void saveReply(int postId, RequestReplyDto requestReplyDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> {
             return new IllegalArgumentException("댓글 쓰기 실패: 게시물 id를 찾을 수 없습니다.");
         }); //영속화
@@ -33,6 +33,9 @@ public class ReplyService {
                 .build();
 
         replyRepository.save(reply);
-        return "댓글쓰기 완료";
+    }
+
+    public void deleteById(int id) {
+        replyRepository.deleteById(id);
     }
 }

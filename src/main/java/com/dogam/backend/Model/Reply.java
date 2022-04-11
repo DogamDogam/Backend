@@ -1,7 +1,4 @@
 package com.dogam.backend.Model;
-
-import com.dogam.backend.Dto.RequestPostDto;
-import com.dogam.backend.Dto.RequestReplyDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 

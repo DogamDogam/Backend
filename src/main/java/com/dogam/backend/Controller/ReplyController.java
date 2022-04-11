@@ -23,6 +23,13 @@ public class ReplyController {
 
     @PostMapping("/reply/{postId}")
     public String postReply(@PathVariable int postId, @RequestBody RequestReplyDto requestReplyDto) {
-        return replyService.saveReply(postId, requestReplyDto);
+        replyService.saveReply(postId, requestReplyDto);
+        return "댓글작성완료";
+    }
+
+    @DeleteMapping("/reply/{postId}/{id}")
+    public String deleteReply(@PathVariable int id) {
+        replyService.deleteById(id);
+        return "댓글삭제완료";
     }
 }

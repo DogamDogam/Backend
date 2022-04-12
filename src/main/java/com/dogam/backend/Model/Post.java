@@ -20,7 +20,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 65555)
     private String image;
 
     @Column(nullable = false)

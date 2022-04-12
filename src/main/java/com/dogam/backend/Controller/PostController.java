@@ -21,7 +21,7 @@ public class PostController {
        return postService.selectPosts();
     }
 
-    @PostMapping("/posts")
+    @PostMapping("/post")
     public String postPost(@RequestBody RequestPostDto requestPostDto) {
         postService.savePost(new Post(requestPostDto));
         return "저장완료";

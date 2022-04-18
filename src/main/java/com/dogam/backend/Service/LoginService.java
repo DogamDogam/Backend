@@ -1,6 +1,8 @@
 package com.dogam.backend.Service;
 
 import com.dogam.backend.Dto.UserInfoDto;
+import com.dogam.backend.Repository.LoginRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -9,12 +11,16 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class LoginService {
+
+    private final LoginRepository loginRepository;
+    private static UserService userService;
 
     // 받은 code를 이용하여 access token을 발급받기 위한 함수
     public static String getKakaoAccessToken(String code){
@@ -76,9 +82,11 @@ public class LoginService {
 
     }
 
-    // 사용자 정보 가져오기. token = Access Token
-    public static void createUserInfo(String token) {
+    // 회원가입. 사용자 정보 가져오기. token = Access Token
+    // 회원가입 검사를 통과한 이후 수행
+    public static Optional<UserInfoDto> getUserInfo(String token) {
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
+        HashMap<String, Object> InfoMap = new HashMap<>();
 
         try {
             URL url = new URL(reqUrl);
@@ -125,11 +133,31 @@ public class LoginService {
             System.out.println("image : " + image);
             System.out.println("-----------------");
 
+            InfoMap.put("id", id);
+            InfoMap.put("email", email);
+            InfoMap.put("nickname", nickname);
+            InfoMap.put("image", image);
+
             br.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(InfoMap.get("email"));
+        if ((userService.findByEmail((String)(InfoMap.get("email")))).isPresent()) {
+            ObjectMapper mapper = new ObjectMapper();
+            UserInfoDto dto = mapper.convertValue(InfoMap, UserInfoDto.class);
+            userService.saveUserInfo(dto);
+            return userService.findByEmail((String)(InfoMap.get("email")));
+        }
+        else
+            return userService.findByEmail((String)(InfoMap.get("email")));
     }
+
+    // 로그인
+
+    // 회원가입시 기존 회원정보가 있는지 검사
+
+    // 로그인시 기존 회원정보와 같은 정보가 있는지 검사
 }
 

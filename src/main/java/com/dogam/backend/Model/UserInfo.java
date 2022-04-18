@@ -10,18 +10,20 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name="UserInfo")
+@Builder
 public class UserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int userId;
 
-    @Column
-    private int user_id;
-    private String user_email;
-    private String user_nickname;
-    private String user_image;
+    @Column(nullable = false, name="user_email")
+    private String userEmail;
+
+    @Column(nullable = false, name="user_nickname")
+    private String userNickname;
+
+    @Column(nullable = false, name="user_image")
+    private String userImage;
 }

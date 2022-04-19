@@ -20,12 +20,12 @@ public class UserService {
     static ModelMapper modelMapper;
     private final LoginRepository loginRepository;
 
-    public Optional<UserInfoDto> findByEmail(String email) {
-        Optional<UserInfo> opt = Optional.empty();
-        opt =loginRepository.findByuserEmail(email);
-        UserInfo entity = opt.get();
-        UserInfoDto dto = of(entity);
-        return Optional.of(dto);
+    public Optional<List> findByEmail(String email) {
+        Optional<List> opt = loginRepository.findByuserEmail(email);
+        if (!opt.isPresent()) {
+            throw new IllegalArgumentException();
+        }
+        return opt;
     }
 
     @Transactional
@@ -34,7 +34,7 @@ public class UserService {
     }
 
     // Entity -> DTO
-    public static UserInfoDto of(UserInfo userInfo) {
+    public UserInfoDto of(UserInfo userInfo) {
         return modelMapper.map(userInfo, UserInfoDto.class);
     }
 }

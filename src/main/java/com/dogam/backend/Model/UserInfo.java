@@ -18,12 +18,12 @@ public class UserInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @Column(nullable = false, name="user_email")
+    @Column(nullable = false)
     private String userEmail;
 
-    @Column(nullable = false, name="user_nickname")
+    @Column(nullable = false)
     private String userNickname;
 
-    @Column(nullable = false, name="user_image")
+    @Column(nullable = false)
     private String userImage;
 }

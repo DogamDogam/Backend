@@ -1,7 +1,9 @@
 package com.dogam.backend.Service;
 
 import com.dogam.backend.Dto.UserInfoDto;
+import com.dogam.backend.Model.UserInfo;
 import com.dogam.backend.Repository.LoginRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,6 +15,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,7 +26,7 @@ public class LoginService {
     private static UserService userService;
 
     // 받은 code를 이용하여 access token을 발급받기 위한 함수
-    public static String getKakaoAccessToken(String code){
+    public String getKakaoAccessToken(String code){
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -84,7 +87,7 @@ public class LoginService {
 
     // 회원가입. 사용자 정보 가져오기. token = Access Token
     // 회원가입 검사를 통과한 이후 수행
-    public static Optional<UserInfoDto> getUserInfo(String token) {
+    public Optional<List> getUserInfo(String token) {
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
         HashMap<String, Object> InfoMap = new HashMap<>();
 
@@ -114,44 +117,49 @@ public class LoginService {
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
-            int id = element.getAsJsonObject().get("id").getAsInt();
+            int userId = element.getAsJsonObject().get("id").getAsInt();
             // 회원번호
             boolean hasEmail = kakao_account.get("has_email").getAsBoolean();
-            String email = "";
+            String userEmail = "";
             if (hasEmail) {
-                email = kakao_account.get("email").getAsString();
+                userEmail = kakao_account.get("email").getAsString();
             }
 
-            String nickname = "";
-            nickname = properties.get("nickname").getAsString();
-            String image = properties.get("profile_image").getAsString();
+            String userNickname = "";
+            userNickname = properties.get("nickname").getAsString();
+            String userImage = properties.get("profile_image").getAsString();
 
             System.out.println("-----------------");
-            System.out.println("id : " + id);
-            System.out.println("email : " + email);
-            System.out.println("nickname" + nickname);
-            System.out.println("image : " + image);
+            System.out.println("id : " + userId);
+            System.out.println("email : " + userEmail);
+            System.out.println("nickname" + userNickname);
+            System.out.println("image : " + userImage);
             System.out.println("-----------------");
 
-            InfoMap.put("id", id);
-            InfoMap.put("email", email);
-            InfoMap.put("nickname", nickname);
-            InfoMap.put("image", image);
+            InfoMap.put("userEmail", userEmail);
+            InfoMap.put("userEmail", userEmail);
+            InfoMap.put("userNickname", userNickname);
+            InfoMap.put("userImage", userImage);
 
             br.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(InfoMap.get("email"));
-        if ((userService.findByEmail((String)(InfoMap.get("email")))).isPresent()) {
-            ObjectMapper mapper = new ObjectMapper();
-            UserInfoDto dto = mapper.convertValue(InfoMap, UserInfoDto.class);
+        System.out.println(InfoMap.get("userEmail"));
+        ObjectMapper mapper = new ObjectMapper();
+        UserInfoDto dto = mapper.convertValue(InfoMap, UserInfoDto.class);
+        if ((userService.findByEmail((String)(InfoMap.get("userEmail"))).isPresent())) {
             userService.saveUserInfo(dto);
-            return userService.findByEmail((String)(InfoMap.get("email")));
         }
-        else
-            return userService.findByEmail((String)(InfoMap.get("email")));
+        Optional<List> opt_userInfo = (userService.findByEmail((String)(InfoMap.get("userEmail"))));
+
+        return opt_userInfo;
+
+    }
+
+    public UserInfoDto of(UserInfo userInfo) {
+        return userService.of(userInfo);
     }
 
     // 로그인

@@ -1,16 +1,15 @@
 package com.dogam.backend.Repository;
 
-import com.dogam.backend.Dto.UserInfoDto;
 import com.dogam.backend.Model.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface LoginRepository extends JpaRepository<UserInfo, Long> {
-    // Select * FROM UserInfo WHERE user_email = "~@naver.com"
-    // user_id, user_nickname, user_image
-    Optional<UserInfo> findByuserEmail(String user_email);
+
+    // SELECT * FROM UserInfo WHERE userEmail = userEmail
+    Optional<List> findByuserEmail(String userEmail);
 }

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @AllArgsConstructor
 @Builder
 public class UserInfoDto {
-    private int userId;
+    private long userId;
     private String userEmail;
     private String userNickname;
     private String userImage;

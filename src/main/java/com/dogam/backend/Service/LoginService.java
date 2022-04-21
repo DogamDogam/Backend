@@ -3,7 +3,6 @@ package com.dogam.backend.Service;
 import com.dogam.backend.Dto.UserInfoDto;
 import com.dogam.backend.Model.UserInfo;
 import com.dogam.backend.Repository.LoginRepository;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -23,7 +22,7 @@ import java.util.Optional;
 public class LoginService {
 
     private final LoginRepository loginRepository;
-    private static UserService userService;
+    private final UserService userService;
 
     // 받은 code를 이용하여 access token을 발급받기 위한 함수
     public String getKakaoAccessToken(String code){
@@ -84,10 +83,10 @@ public class LoginService {
         return access_Token;
 
     }
-
     // 회원가입. 사용자 정보 가져오기. token = Access Token
+
     // 회원가입 검사를 통과한 이후 수행
-    public Optional<List> getUserInfo(String token) {
+    public UserInfoDto getUserInfo(String token) {
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
         HashMap<String, Object> InfoMap = new HashMap<>();
 
@@ -136,7 +135,7 @@ public class LoginService {
             System.out.println("image : " + userImage);
             System.out.println("-----------------");
 
-            InfoMap.put("userEmail", userEmail);
+            InfoMap.put("userId", userId);
             InfoMap.put("userEmail", userEmail);
             InfoMap.put("userNickname", userNickname);
             InfoMap.put("userImage", userImage);
@@ -147,25 +146,36 @@ public class LoginService {
             e.printStackTrace();
         }
         System.out.println(InfoMap.get("userEmail"));
-        ObjectMapper mapper = new ObjectMapper();
-        UserInfoDto dto = mapper.convertValue(InfoMap, UserInfoDto.class);
-        if ((userService.findByEmail((String)(InfoMap.get("userEmail"))).isPresent())) {
-            userService.saveUserInfo(dto);
+
+        // 계정 정보가 DB에 있는지 확인
+        if (checkAccount(InfoMap)) {
+            // 없을 경우
+            register(InfoMap);
+            // 회원 가입
         }
-        Optional<List> opt_userInfo = (userService.findByEmail((String)(InfoMap.get("userEmail"))));
 
-        return opt_userInfo;
+        return userService.findByEmail((String)InfoMap.get("userEmail"));
+        // 있다면, 해당 정보를 갖고와 리턴
 
     }
 
-    public UserInfoDto of(UserInfo userInfo) {
-        return userService.of(userInfo);
+    // 회원가입
+    public void register(HashMap<String, Object> InfoMap) {
+        ObjectMapper mapper = new ObjectMapper();
+        UserInfo entity = mapper.convertValue(InfoMap, UserInfo.class);
+        // HashMap -> UserInfo로 변환. 계정 저장시 이용
+        userService.saveUserInfo(entity);
     }
 
-    // 로그인
+    // 해당 계정이 DB에 있는지 확인
+    public boolean checkAccount(HashMap<String, Object> InfoMap) {
+        if (userService.findByEmail((String)InfoMap.get("userEmail"))==null)
+            return true;
+        return false;
+    }
 
-    // 회원가입시 기존 회원정보가 있는지 검사
-
-    // 로그인시 기존 회원정보와 같은 정보가 있는지 검사
+    public List<UserInfoDto> getUserInfoDto() {
+        return userService.findAll();
+    }
 }
 

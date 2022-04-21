@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,24 +18,42 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    static ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
     private final LoginRepository loginRepository;
 
-    public Optional<List> findByEmail(String email) {
-        Optional<List> opt = loginRepository.findByuserEmail(email);
-        if (!opt.isPresent()) {
-            throw new IllegalArgumentException();
+    public List<UserInfoDto> findAll() {
+        List<UserInfoDto> dto = toDtoClass(loginRepository.findAll());
+        return dto;
+    }
+
+    public UserInfoDto findByEmail(String email) {
+        Optional<UserInfo> opt_userInfo = Optional.ofNullable(loginRepository.findByuserEmail(email));
+        UserInfoDto userInfoDto = new UserInfoDto();
+        if (opt_userInfo.isPresent()) {
+            UserInfo userInfo = opt_userInfo.get();
+            userInfoDto = of(userInfo);
         }
-        return opt;
+        return userInfoDto;
     }
 
     @Transactional
-    public void saveUserInfo(UserInfoDto user) {
-        loginRepository.save(user.toEntity());
+    public void saveUserInfo(UserInfo user) {
+        loginRepository.save(user);
     }
 
     // Entity -> DTO
     public UserInfoDto of(UserInfo userInfo) {
         return modelMapper.map(userInfo, UserInfoDto.class);
+    }
+
+    // Entity Class -> DTO Class
+    public List<UserInfoDto> toDtoClass(List<UserInfo> entityList) {
+        List<UserInfoDto> DtoList = new ArrayList<>();
+        for(UserInfo entity : entityList) {
+            DtoList.add(of(entity));
+        }
+        return DtoList;
+        // https://dbbymoon.tistory.com/4
     }
 }

@@ -16,7 +16,7 @@ public class UserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private long userId;
 
     @Column(nullable = false)
     private String userEmail;

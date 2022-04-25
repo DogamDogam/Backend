@@ -22,7 +22,7 @@ public class LoginController {
     @PostMapping("/kakao")
     public void kakaoCallback(@RequestParam String code) {
         String access_token = loginService.getKakaoAccessToken(code);
-        UserInfoDto userinfodto = loginService.getUserInfo(access_token);
+        loginService.getUserInfo(access_token);
     }
 
     @GetMapping("/kakao")

@@ -174,8 +174,11 @@ public class LoginService {
         return false;
     }
 
+    // 계정 정보 조회
     public List<UserInfoDto> getUserInfoDto() {
         return userService.findAll();
     }
+
+    // 로그아웃
 }
 

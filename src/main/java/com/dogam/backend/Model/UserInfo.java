@@ -24,6 +24,6 @@ public class UserInfo {
     @Column(nullable = false)
     private String userNickname;
 
-    @Column(nullable = false)
+    @Column
     private String userImage;
 }

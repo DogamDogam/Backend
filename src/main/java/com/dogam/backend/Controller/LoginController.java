@@ -1,6 +1,7 @@
 package com.dogam.backend.Controller;
 import com.dogam.backend.Dto.UserInfoDto;
 import com.dogam.backend.Model.UserInfo;
+import com.dogam.backend.Repository.LoginRepository;
 import com.dogam.backend.Service.LoginService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,15 +19,18 @@ import java.util.List;
 public class LoginController {
 
     private final LoginService loginService;
+    private final LoginRepository loginRepository;
 
-    @PostMapping("/kakao")
+    @GetMapping("/kakao")
     public void kakaoCallback(@RequestParam String code) {
+        System.out.println(code);
         String access_token = loginService.getKakaoAccessToken(code);
         loginService.getUserInfo(access_token);
     }
 
-    @GetMapping("/kakao")
-    public ResponseEntity<List<UserInfoDto>> getUserInfo() {
-        return new ResponseEntity<>(loginService.getUserInfoDto(), HttpStatus.OK);
+    @GetMapping("/kakao/getUser")
+    public ResponseEntity<List<UserInfo>> getUserInfo()
+    {
+        return new ResponseEntity<>(loginRepository.findAll(), HttpStatus.OK);
     }
 }

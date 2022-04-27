@@ -28,7 +28,7 @@ public class LoginController {
         loginService.getUserInfo(access_token);
     }
 
-    @GetMapping("/kakao/getUser")
+    @GetMapping("/getUser")
     public ResponseEntity<List<UserInfo>> getUserInfo()
     {
         return new ResponseEntity<>(loginRepository.findAll(), HttpStatus.OK);

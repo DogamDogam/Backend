@@ -18,8 +18,8 @@ import java.util.List;
 @CrossOrigin
 public class LoginController {
 
-    private final LoginService loginService = null;
-    private final LoginRepository loginRepository = null;
+    private final LoginService loginService;
+    private final LoginRepository loginRepository;
 
     @GetMapping("/kakao")
     public void kakaoCallback(@RequestParam String code) {

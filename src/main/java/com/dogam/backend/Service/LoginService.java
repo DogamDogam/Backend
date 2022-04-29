@@ -159,33 +159,27 @@ public class LoginService {
         System.out.println(InfoMap.get("userEmail"));
 
 
-//        // 계정 정보가 DB에 있는지 확인
-//        if (checkAccount(InfoMap)) {
-//            // 없을 경우
-//            register(InfoMap);
-//            return userService.findByEmail((String)InfoMap.get("userEmail"));
-//
-//            // 회원 가입
-//        }
-//
-//        else return userService.findByEmail((String)InfoMap.get("userEmail"));
-//        // 있다면, 해당 정보를 갖고와 리턴
-
+        // 계정 정보가 DB에 있는지 확인
+        if (checkAccount(InfoMap)) {
+            // 없을 경우
+            register(InfoMap);
+            // 회원 가입
+        }
     }
     // 회원가입
-//    public void register(HashMap<String, Object> InfoMap) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        UserInfo entity = mapper.convertValue(InfoMap, UserInfo.class);
-//        // HashMap -> UserInfo로 변환. 계정 저장시 이용
-//        userService.saveUserInfo(entity);
-//    }
+    public void register(HashMap<String, Object> InfoMap) {
+        ObjectMapper mapper = new ObjectMapper();
+        UserInfo entity = mapper.convertValue(InfoMap, UserInfo.class);
+        // HashMap -> UserInfo로 변환. 계정 저장시 이용
+        userService.saveUserInfo(entity);
+    }
 
     // 해당 계정이 DB에 있는지 확인
-//    public boolean checkAccount(HashMap<String, Object> InfoMap) {
-//        if (userService.findByEmail((String)InfoMap.get("userEmail"))==null) {return true;
-//        }
-//        return false;
-//    }
+    public boolean checkAccount(HashMap<String, Object> InfoMap) {
+        if (userService.findByEmail((String)InfoMap.get("userEmail"))==null) {return true;
+        }
+        return false;
+    }
 
 //    // 계정 정보 조회
 //    public List<UserInfoDto> getUserInfoDto() {

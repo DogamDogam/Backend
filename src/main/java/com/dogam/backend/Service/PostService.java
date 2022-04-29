@@ -25,11 +25,11 @@ public class PostService {
            postRepository.save(post);
     }
 
-    public Optional<List> findByCategory(int id) {
-        if (id == 1) return postRepository.findByCategory("식재료");
-        else if( id ==2) return postRepository.findByCategory("배달비");
-        else if (id == 3) return postRepository.findByCategory("물품");
-        return Optional.empty();
+    public Page<Post> findByCategory(int id, Pageable pageable) {
+        if (id == 1) return postRepository.findByCategory("식재료", pageable);
+        else if( id ==2) return postRepository.findByCategory("배달비", pageable);
+        else if (id == 3) return postRepository.findByCategory("물품", pageable);
+        return null;
     }
 
     public Optional<Post> findById(int id) {

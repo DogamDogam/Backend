@@ -3,6 +3,8 @@ package com.dogam.backend.Service;
 import com.dogam.backend.Model.Post;
 import com.dogam.backend.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +16,8 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
 
-    public List<Post>  selectPosts() {
-        return postRepository.findAll();
+    public Page<Post> selectPosts(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     @Transactional

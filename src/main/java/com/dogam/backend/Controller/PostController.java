@@ -4,6 +4,10 @@ import com.dogam.backend.Dto.RequestPostDto;
 import com.dogam.backend.Model.Post;
 import com.dogam.backend.Service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +23,9 @@ public class PostController {
     final private PostService postService;
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> fetchPosts() {
-       return new ResponseEntity<>(postService.selectPosts(), HttpStatus.OK);
+    public ResponseEntity<Page<Post>> fetchPosts(@PageableDefault(size=5, sort="id",direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(postService.selectPosts(pageable),HttpStatus.OK);
+        //       return new ResponseEntity<>(postService.selectPosts(pageable), HttpStatus.OK);
     }
 
     @PostMapping("/posts")

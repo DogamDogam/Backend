@@ -32,8 +32,10 @@ public class PostService {
         return null;
     }
 
-    public Optional<Post> findById(int id) {
-        return postRepository.findById(id);
+    public Post findById(int id) {
+        return postRepository.findById(id).orElseThrow(()-> {
+            return new IllegalArgumentException("글 찾기 실패: 아이디를 찾을 수 없습니다.");
+        });
     }
 
     @Transactional

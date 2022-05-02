@@ -18,7 +18,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value = "select * from Post a INNER JOIN (select * from Reply group by post_id) b ON a.id = b.post_id", nativeQuery = true)
     public List<Post> selectTradingPosts();
 
-    //중복 문제
     @Query(value = "select * from Post a LEFT JOIN Reply b ON a.id = b.post_id where b.id is null", nativeQuery = true)
     public List<Post> selectWaitingPosts();
 

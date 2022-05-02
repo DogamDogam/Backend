@@ -30,7 +30,6 @@ public class PostController {
     @GetMapping("/posts")
     public ResponseEntity<Page<Post>> fetchPosts(@PageableDefault(size=5, sort="id",direction = Sort.Direction.DESC) Pageable pageable) {
         return new ResponseEntity<>(postService.selectPosts(pageable),HttpStatus.OK);
-        //       return new ResponseEntity<>(postService.selectPosts(pageable), HttpStatus.OK);
     }
 
     //게시물 저장
@@ -61,7 +60,7 @@ public class PostController {
 
     //게시물 개별 출력
     @GetMapping("/post/{id}")
-    public ResponseEntity<Optional<Post>> findById(@PathVariable int id) { //model에 담음
+    public ResponseEntity<Post> findById(@PathVariable int id) { //model에 담음
         return new ResponseEntity<>(postService.findById(id),HttpStatus.OK);
 
     }

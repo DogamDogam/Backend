@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,7 +17,7 @@ public class ReplyService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
 
-    public Optional<List> selectReplys(int postId) {
+    public List<Reply> selectReplys(int postId) {
             return replyRepository.findByPostId(postId);
     }
 

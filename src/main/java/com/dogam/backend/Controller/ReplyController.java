@@ -1,6 +1,7 @@
 package com.dogam.backend.Controller;
 
 import com.dogam.backend.Dto.RequestReplyDto;
+import com.dogam.backend.Model.Reply;
 import com.dogam.backend.Service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,7 +19,7 @@ public class ReplyController {
     private final ReplyService replyService;
 
     @GetMapping("/reply/{postId}")
-    public ResponseEntity<Optional<List>> fetchReplys(@PathVariable int postId) {
+    public ResponseEntity<List<Reply>> fetchReplys(@PathVariable int postId) {
         return new ResponseEntity<>(replyService.selectReplys(postId), HttpStatus.OK);
 
     }

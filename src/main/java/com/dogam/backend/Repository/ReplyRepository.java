@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     //SELECT * FROM user WHERE postId = postId;
-    Optional<List> findByPostId(int postId);
+    List<Reply> findByPostId(int postId);
 }

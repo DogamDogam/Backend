@@ -30,6 +30,7 @@ public class LoginService {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
+        System.out.println("코드값 : " +code);
         // 인가 코드로 토큰 발급을 요청할 url (카카오 서버에게 보냄)
 
         try {
@@ -79,6 +80,7 @@ public class LoginService {
             br.close();
             bw.close();
         } catch (IOException e) {
+            System.out.println("오류발생");
             e.printStackTrace();
         }
         return access_Token;
@@ -117,7 +119,7 @@ public class LoginService {
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
-            int userId = element.getAsJsonObject().get("id").getAsInt();
+            long userId = element.getAsJsonObject().get("id").getAsInt();
             // 회원번호
             boolean hasEmail = kakao_account.get("has_email").getAsBoolean();
             String userEmail = "";
@@ -127,7 +129,7 @@ public class LoginService {
 
             String userNickname = "";
             userNickname = properties.get("nickname").getAsString();
-//            String userImage = properties.get("profile_image").getAsString();
+            String userImage = properties.get("profile_image").getAsString();
 
             System.out.println("-----------------");
             System.out.println("id : " + userId);
@@ -139,7 +141,7 @@ public class LoginService {
             InfoMap.put("userId", userId);
             InfoMap.put("userEmail", userEmail);
             InfoMap.put("userNickname", userNickname);
-            InfoMap.put("userImage", "userImage");
+            InfoMap.put("userImage", userImage);
 
             br.close();
 
@@ -147,11 +149,8 @@ public class LoginService {
                     .userId(userId)
                     .userNickname(userNickname)
                     .userEmail(userEmail)
-                    .userImage("userImage")
+                    .userImage(userImage)
                     .build();
-
-
-            loginRepository.save(userInfo);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,7 +159,8 @@ public class LoginService {
 
 
         // 계정 정보가 DB에 있는지 확인
-        if (checkAccount(InfoMap)) {
+        if (checkAccount((String)InfoMap.get("useremail"))) {
+            System.out.println("회원정보가 없음");
             // 없을 경우
             register(InfoMap);
             // 회원 가입
@@ -175,9 +175,12 @@ public class LoginService {
     }
 
     // 해당 계정이 DB에 있는지 확인
-    public boolean checkAccount(HashMap<String, Object> InfoMap) {
-        if (userService.findByEmail((String)InfoMap.get("userEmail"))==null) {return true;
+    public boolean checkAccount(String email) {
+        if (userService.findByEmail(email).getUserEmail()==null) {
+            System.out.println("이메일 없음");
+            return true;
         }
+        System.out.println("이메일 있음");
         return false;
     }
 

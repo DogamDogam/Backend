@@ -40,6 +40,7 @@ public class UserService {
     @Transactional
     public void saveUserInfo(UserInfo user) {
         loginRepository.save(user);
+        System.out.println("회원정보 저장");
     }
 
     // Entity -> DTO

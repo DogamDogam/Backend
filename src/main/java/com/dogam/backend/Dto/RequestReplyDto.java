@@ -12,4 +12,5 @@ public class RequestReplyDto {
     private String image;
     private String content;
     private int postId;
+    private long userId;
 }

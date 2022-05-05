@@ -41,6 +41,9 @@ public class Post {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private long userId;
+
     @CreationTimestamp
     private Timestamp createDate;
 
@@ -52,5 +55,6 @@ public class Post {
         this.numOfpeople = requestPostDto.getNumOfpeople();
         this.category = requestPostDto.getCategory();
         this.description = requestPostDto.getDescription();
+        this.userId = requestPostDto.getUserId();
     }
 }

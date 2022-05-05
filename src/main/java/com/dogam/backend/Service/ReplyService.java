@@ -29,6 +29,7 @@ public class ReplyService {
                 .post(post)
                 .image(requestReplyDto.getImage())
                 .content(requestReplyDto.getContent())
+                .userId(requestReplyDto.getUserId())
                 .build();
 
         replyRepository.save(reply);

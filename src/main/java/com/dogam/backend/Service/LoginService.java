@@ -129,13 +129,22 @@ public class LoginService {
 
             String userNickname = "";
             userNickname = properties.get("nickname").getAsString();
-            String userImage = properties.get("profile_image").getAsString();
+            String userImage = "";
+            boolean hasImage = kakao_account.get("profile").getAsJsonObject().get("is_default_image").getAsBoolean();
+            System.out.println("이미지 여부 : " + hasImage);
+            if (hasImage) {
+                // 사용자가 등록한 프로필 사진이 없을 경우
+                userImage = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+            }
+            else {
+                userImage = properties.get("profile_image").getAsString();
+            }
 
             System.out.println("-----------------");
             System.out.println("id : " + userId);
             System.out.println("email : " + userEmail);
             System.out.println("nickname" + userNickname);
-//            System.out.println("image : " + userImage);
+            System.out.println("image : " + userImage);
             System.out.println("-----------------");
 
             InfoMap.put("userId", userId);

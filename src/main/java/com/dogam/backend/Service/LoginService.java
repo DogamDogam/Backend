@@ -164,11 +164,9 @@ public class LoginService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(InfoMap.get("userEmail"));
-
-
+        
         // 계정 정보가 DB에 있는지 확인
-        if (checkAccount((String)InfoMap.get("useremail"))) {
+        if (checkAccount((String)InfoMap.get("userEmail"))) {
             System.out.println("회원정보가 없음");
             // 없을 경우
             register(InfoMap);
@@ -185,6 +183,7 @@ public class LoginService {
 
     // 해당 계정이 DB에 있는지 확인
     public boolean checkAccount(String email) {
+        System.out.println(userService.findByEmail(email).getUserEmail());
         if (userService.findByEmail(email).getUserEmail()==null) {
             System.out.println("이메일 없음");
             return true;

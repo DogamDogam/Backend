@@ -38,6 +38,11 @@ public class PostController {
     }
 
     //카테고리별 출력
+    @GetMapping("/posts/category/0")
+    public ResponseEntity<Page<Post>> fetchPosts2(@PageableDefault(size=5, sort="id",direction = Sort.Direction.DESC) Pageable pageable) {
+        return new ResponseEntity<>(postService.selectPosts(pageable),HttpStatus.OK);
+    }
+
     @GetMapping("/posts/category/1")
     public ResponseEntity<Page<Post>> foodPosts(@PageableDefault(size=5, sort="id",direction = Sort.Direction.DESC) Pageable pageable)  {
         return new ResponseEntity<>(postService.findByCategory(1, pageable),HttpStatus.OK);

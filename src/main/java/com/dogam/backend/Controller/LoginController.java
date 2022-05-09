@@ -29,8 +29,8 @@ public class LoginController {
     }
 
     @GetMapping("/getUser")
-    public ResponseEntity<List<UserInfo>> getUserInfo()
+    public ResponseEntity<UserInfo> getUserInfo()
     {
-        return new ResponseEntity<>(loginRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity(loginRepository.findAll(), HttpStatus.OK);
     }
 }

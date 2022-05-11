@@ -13,4 +13,5 @@ public class RequestReplyDto {
     private String content;
     private int postId;
     private long userId;
+    private String userName;
 }

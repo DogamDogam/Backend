@@ -28,6 +28,9 @@ public class Reply {
     @Column(nullable = false)
     private long userId;
 
+    @Column(nullable = false)
+    private String userName;
+
     @ManyToOne //여러개의 답변은 하나의 게시물에 존재
     @JoinColumn(name="postId")
     @OnDelete(action = OnDeleteAction.CASCADE)

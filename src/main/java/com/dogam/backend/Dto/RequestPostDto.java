@@ -16,4 +16,5 @@ public class RequestPostDto {
     private int numOfpeople;
     private String description;
     private long userId;
+    private String userName;
 }

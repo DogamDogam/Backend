@@ -82,14 +82,24 @@ public class PostController {
         return new ResponseEntity<>("삭제완료",HttpStatus.OK);
     }
 
-    @GetMapping("posts/trade/{userId}")
-    public List<Post> selectTradingPosts(@PathVariable String userId) {
-        return postRepository.selectTradingPosts(userId);
+    @GetMapping("posts/trade")
+    public List<Post> selectTradingPosts() {
+        return postRepository.selectTradingPosts();
     }
 
-    @GetMapping("posts/wait/{userId}")
-    public List<Post> selectWaitingPosts(@PathVariable String userId) {
-        return postRepository.selectWaitingPosts(userId);
+    @GetMapping("posts/wait")
+    public List<Post> selectWaitingPosts() {
+        return postRepository.selectWaitingPosts();
+    }
+
+    @GetMapping("posts/sale/{userId}")
+    public List<Post> selectSalesPosts(@PathVariable String userId) {
+        return postRepository.selectSalesPosts(userId);
+    }
+
+    @GetMapping("posts/purchase/{userId}")
+    public List<Post> selectPurchasedPosts(@PathVariable String userId) {
+        return postRepository.selectPurchasedPosts(userId);
     }
 
 

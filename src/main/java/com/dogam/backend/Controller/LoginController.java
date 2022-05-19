@@ -20,17 +20,21 @@ public class LoginController {
 
     private final LoginService loginService;
     private final LoginRepository loginRepository;
+    private String userEmail;
 
     @GetMapping("/kakao")
     public void kakaoCallback(@RequestParam String code) {
+        userEmail = null;
         System.out.println(code);
         String access_token = loginService.getKakaoAccessToken(code);
-        loginService.getUserInfo(access_token);
+        userEmail = loginService.getUserInfo(access_token);
+        System.out.println("kakao : " + userEmail);
     }
 
     @GetMapping("/getUser")
-    public ResponseEntity<UserInfo> getUserInfo()
+    public ResponseEntity<UserInfoDto> getUserInfo()
     {
-        return new ResponseEntity(loginRepository.findAll(), HttpStatus.OK);
+        System.out.println("getuser : " + userEmail);
+        return new ResponseEntity(loginService.login(userEmail), HttpStatus.OK);
     }
 }

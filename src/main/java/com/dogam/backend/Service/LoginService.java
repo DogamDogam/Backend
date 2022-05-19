@@ -89,7 +89,7 @@ public class LoginService {
     // 회원가입. 사용자 정보 가져오기. token = Access Token
 
     // 회원가입 검사를 통과한 이후 수행
-    public void getUserInfo(String token) {
+    public String getUserInfo(String token) {
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
         HashMap<String, Object> InfoMap = new HashMap<>();
 
@@ -172,6 +172,7 @@ public class LoginService {
             register(InfoMap);
             // 회원 가입
         }
+        return (String)InfoMap.get("userEmail");
     }
     // 회원가입
     public void register(HashMap<String, Object> InfoMap) {
@@ -192,10 +193,10 @@ public class LoginService {
         return false;
     }
 
-//    // 계정 정보 조회
-//    public List<UserInfoDto> getUserInfoDto() {
-//        return userService.findAll();
-//    }
+    // 계정 정보 조회
+    public UserInfoDto login(String userEmail) {
+        return userService.findByEmail(userEmail);
+    }
 
     // 로그아웃
 }

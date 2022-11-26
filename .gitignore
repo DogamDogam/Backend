@@ -14,6 +14,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+**/src/main/resource/application.properties
 .idea
 *.iws
 *.iml
@@ -31,4 +32,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/application.yml

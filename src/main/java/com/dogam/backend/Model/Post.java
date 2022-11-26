@@ -1,9 +1,11 @@
 package com.dogam.backend.Model;
 
-import com.dogam.backend.Dto.RequestPostDto;
 import lombok.*;
+import com.dogam.backend.Dto.RequestPostDto;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 
 @Getter
@@ -12,14 +14,13 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="Post")
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 65555)
     private String image;
 
     @Column(nullable = false)
@@ -40,6 +41,15 @@ public class Post {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private long userId;
+
+    @Column(nullable = false)
+    private String userName;
+
+    @CreationTimestamp
+    private Timestamp createDate;
+
     public Post(RequestPostDto requestPostDto) {
         this.image = requestPostDto.getImage();
         this.title = requestPostDto.getTitle();
@@ -48,5 +58,7 @@ public class Post {
         this.numOfpeople = requestPostDto.getNumOfpeople();
         this.category = requestPostDto.getCategory();
         this.description = requestPostDto.getDescription();
+        this.userId = requestPostDto.getUserId();
+        this.userName = requestPostDto.getUserName();
     }
 }
